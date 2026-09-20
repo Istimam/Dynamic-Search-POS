@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Dynamic Search Counter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-[#f0f4f8] text-gray-800 font-sans h-screen flex flex-col overflow-hidden">
+
+    <!-- Top Navigation Bar -->
+    <header
+        class="bg-[#f8fafc] border-b border-gray-200 py-2 px-4 flex items-center justify-between shadow-sm shrink-0">
+        <div class="flex items-center space-x-2 text-sm text-gray-600">
+            <span class="font-bold text-gray-800 flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                    </path>
+                </svg>
+                MANAGERIUM
+            </span>
+            <span>|</span>
+            <span>Counter: Octa-Pharma</span>
+            <span>|</span>
+            <span>User Name: Nasrullah</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <label
+                class="text-sm flex items-center gap-2 cursor-pointer bg-white px-3 py-1 rounded border border-gray-300 shadow-sm hover:bg-gray-50">
+                <input type="checkbox" id="hideCostCheckbox"
+                    class="w-4 h-4 text-teal-600 rounded border-gray-300 focus:ring-teal-500">
+                <span class="font-medium text-gray-700">Hide Cost</span>
+            </label>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col lg:flex-row overflow-hidden max-w-[1920px] mx-auto w-full">
+
+        <!-- Left Section (Search & Invoice List) -->
+        <section
+            class="flex-1 flex flex-col p-4 bg-white m-2 rounded-md shadow-sm border border-gray-200 relative z-10 lg:w-3/4">
+
+            <!-- Customer & Points Row -->
+            <div class="flex flex-wrap items-center justify-between mb-4 gap-2">
+                <div class="flex items-center gap-2 flex-1 min-w-[300px]">
+                    <input type="text" value="123"
+                        class="border border-gray-300 rounded px-3 py-1.5 w-24 text-sm focus:outline-none focus:border-teal-500"
+                        readonly>
+                    <button class="border border-gray-300 rounded p-1.5 hover:bg-gray-50"><svg
+                            class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
+                            </path>
+                        </svg></button>
+                    <button class="border border-gray-300 rounded p-1.5 hover:bg-gray-50"><svg
+                            class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg></button>
+                    <span class="text-sm text-gray-700 font-medium ml-2">Points : 186.71 | Name : Walking customer |
+                        WC</span>
+                </div>
+                <button
+                    class="bg-[#118B82] text-white text-sm px-4 py-1.5 rounded hover:bg-[#0e766e] transition-colors whitespace-nowrap">Point
+                    Redeem</button>
+            </div>
+
+            <!-- Dynamic Search Bar -->
+            <div class="relative mb-4">
+                <input type="text" id="searchInput" placeholder="Search by name, generic, manufacturer, or type..."
+                    class="w-full border border-gray-300 rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-[#118B82] focus:ring-1 focus:ring-[#118B82] shadow-inner"
+                    autocomplete="off">
+                <span class="absolute right-3 top-2.5 text-xs text-gray-400">Stock: 0 Unit. ✕</span>
+
+                <!-- Dropdown Results -->
+                <div id="searchDropdown"
+                    class="absolute top-full left-0 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-2xl z-50 max-h-[50vh] overflow-y-auto hidden divide-y divide-gray-100">
+                    <!-- Results populated via JS -->
+                </div>
+            </div>
+
+            <!-- Invoice List Table -->
+            <div class="flex-1 overflow-auto border border-gray-200 rounded-md">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-gray-50 text-gray-600 sticky top-0 shadow-sm z-0">
+                        <tr>
+                            <th class="px-4 py-2 font-medium">SL</th>
+                            <th class="px-4 py-2 font-medium">Item Name</th>
+                            <th class="px-4 py-2 font-medium text-right">Qty</th>
+                            <th class="px-4 py-2 font-medium text-right">Price</th>
+                            <th class="px-4 py-2 font-medium text-right">Total</th>
+                            <th class="px-4 py-2 font-medium text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceList" class="divide-y divide-gray-100">
+                        <!-- Invoice items populated here -->
+                    </tbody>
+                </table>
+                <div id="emptyInvoice"
+                    class="h-full flex items-center justify-center text-gray-400 text-sm flex-col py-10">
+                    <svg class="w-12 h-12 mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                        </path>
+                    </svg>
+                    Scan or search products to add to invoice
+                </div>
+            </div>
+
+            <!-- Bottom Action Buttons -->
+            <div class="mt-4 flex flex-wrap gap-2 text-sm shrink-0">
+                <button
+                    class="bg-[#118B82] text-white px-4 py-2 rounded flex-1 min-w-[120px] flex items-center justify-center gap-1 hover:bg-[#0e766e]"><svg
+                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 9V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16a2 2 0 002 2h2m-6-1h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                        </path>
+                    </svg> Hold Invoice (F9)</button>
+                <button
+                    class="bg-[#118B82] text-white px-4 py-2 rounded flex-1 min-w-[120px] flex items-center justify-center gap-1 hover:bg-[#0e766e]"><svg
+                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg> Recall Invoice (F10)</button>
+                <button
+                    class="bg-[#118B82] text-white px-4 py-2 rounded flex-1 min-w-[120px] flex items-center justify-center gap-1 hover:bg-[#0e766e]"><svg
+                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg> Exchange (F5)</button>
+                <button
+                    class="bg-[#118B82] text-white px-4 py-2 rounded flex-1 min-w-[120px] flex items-center justify-center gap-1 hover:bg-[#0e766e]"><svg
+                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg> Return</button>
+                <button
+                    class="bg-[#118B82] text-white px-4 py-2 rounded flex-1 min-w-[150px] flex items-center justify-center gap-1 hover:bg-[#0e766e]"><svg
+                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg> Lock Session (Alt + L)</button>
+            </div>
+        </section>
+
+        <!-- Right Section (Totals & Payment) -->
+        <section
+            class="w-full lg:w-1/4 bg-white m-2 ml-0 rounded-md shadow-sm border border-gray-200 flex flex-col shrink-0">
+
+            <div class="bg-[#118B82] text-white text-xl font-bold py-3 px-4 text-center rounded-t-md">
+                Dhaka Pharmacy
+            </div>
+
+            <div class="flex-1 p-4 flex flex-col gap-3 text-sm overflow-y-auto">
+                <div
+                    class="flex justify-between items-center bg-[#118B82] text-white font-bold p-2 text-lg rounded shadow-sm">
+                    <span>Paid Amount</span>
+                    <span id="paidAmount">0.00</span>
+                </div>
+                <div
+                    class="flex justify-between items-center bg-[#fca5a5] text-red-900 font-bold p-2 text-lg rounded shadow-sm">
+                    <span>Change</span>
+                    <span id="changeAmount">0.00</span>
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                    <span class="font-medium text-gray-700">Special Discount (%)</span>
+                    <select class="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium text-gray-700">Invoice Notes</span>
+                    <input type="text" class="border border-gray-300 rounded px-2 py-1 w-32 focus:outline-none">
+                </div>
+
+                <hr class="border-gray-200 my-1">
+
+                <div class="flex justify-between items-center">
+                    <span class="font-medium text-gray-700">Total Bill</span>
+                    <span class="font-bold" id="totalBill">0.00</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium text-gray-700">Total Discount</span>
+                    <span class="font-bold">0.00</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium text-gray-700">Other Discount</span>
+                    <span class="font-bold">0.00</span>
+                </div>
+
+                <div
+                    class="flex justify-between items-center bg-[#e0f2fe] text-[#0369a1] font-bold p-2 text-xl rounded mt-2 shadow-sm">
+                    <span>Total Amount</span>
+                    <span id="totalAmount">0.00</span>
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                    <span class="font-medium text-gray-700">Cash Amount</span>
+                    <input type="number" id="cashInput"
+                        class="border border-gray-300 rounded px-2 py-1 w-24 text-right font-bold focus:outline-none focus:border-teal-500"
+                        value="0">
+                </div>
+
+                <div class="flex items-center gap-2 mt-2">
+                    <select class="border border-gray-300 rounded px-2 py-1 w-1/3 focus:outline-none text-xs">
+                        <option>Payment Type</option>
+                    </select>
+                    <input type="text" class="border border-gray-300 rounded px-2 py-1 w-1/3 focus:outline-none text-xs"
+                        placeholder="0.00">
+                    <button
+                        class="text-teal-600 hover:bg-teal-50 p-1 rounded border border-transparent hover:border-teal-200"><svg
+                            class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
+                            </path>
+                        </svg></button>
+                </div>
+
+                <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-1 border-r">Pay Type</th>
+                            <th class="p-1 border-r">Amount</th>
+                            <th class="p-1">Ref</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-1 border-r h-6"></td>
+                            <td class="p-1 border-r"></td>
+                            <td class="p-1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Print Button -->
+            <button
+                class="bg-[#118B82] text-white text-2xl font-bold py-4 px-4 text-center rounded-b-md hover:bg-[#0e766e] transition-colors flex justify-between items-center shadow-md">
+                <span>Print</span>
+                <span>0</span>
+            </button>
+        </section>
+    </main>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
